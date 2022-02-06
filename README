@@ -1,0 +1,57 @@
+// Executing the  Shell script
+
+################# This will create specified number of files in the directory and create expected.md5 at the end ############################
+sh md5-gen.sh <directory Path> <number of files need to becreated>
+
+ex: sh time md5-gen.sh /home/spolisetti/LILAC/TEST/ 100
+
+// Executeing the python script
+################# This will create specified number of files in the directory and create expected.md5 at the end ############################
+python md5-gen.py <directory Path> <number of files need to becreated>
+
+ex: python md5-gen.py /home/spolisetti/LILAC/TEST/ 10
+
+// Executing the C Program
+
+Pre-Requisites:
+
+1) Openssl has to be installed on the system where we are executing the program
+2) need ssl and crypto libraries as i am using existing md5 openssl library for computing md5sum
+
+// Makefile is the file written to compile the program
+
+make -f Makefile --> this will generate a md5-compute (output file) after successfull compilation
+
+// Running the C Program
+
+taskset -c 0-1 ./md5-compute <Directory Name>
+
+Ex: taskset -c 0-1 ./md5-compute /home/spolisetti/LILAC/TEST/
+
+This will generate out.md5 file in the above directory given
+
+Ex:
+
+-rw-r--r--. 1 spolisetti user 68600 Feb  6 13:03 86.txt
+-rw-r--r--. 1 spolisetti user 37676 Feb  6 13:03 87.txt
+-rw-r--r--. 1 spolisetti user 58049 Feb  6 13:03 88.txt
+-rw-r--r--. 1 spolisetti user 75698 Feb  6 13:03 89.txt
+-rw-r--r--. 1 spolisetti user 40755 Feb  6 13:03 90.txt
+-rw-r--r--. 1 spolisetti user 99162 Feb  6 13:03 91.txt
+-rw-r--r--. 1 spolisetti user 34844 Feb  6 13:03 92.txt
+-rw-r--r--. 1 spolisetti user 80878 Feb  6 13:03 93.txt
+-rw-r--r--. 1 spolisetti user 30996 Feb  6 13:03 94.txt
+-rw-r--r--. 1 spolisetti user 61727 Feb  6 13:03 95.txt
+-rw-r--r--. 1 spolisetti user 22180 Feb  6 13:03 96.txt
+-rw-r--r--. 1 spolisetti user 91538 Feb  6 13:03 97.txt
+-rw-r--r--. 1 spolisetti user 89654 Feb  6 13:03 98.txt
+-rw-r--r--. 1 spolisetti user 10714 Feb  6 13:03 99.txt
+-rw-r--r--. 1 spolisetti user 99041 Feb  6 13:03 100.txt
+-rw-r--r--. 1 spolisetti user  6892 Feb  6 13:03 expected.md5
+-rw-r--r--. 1 spolisetti user  6892 Feb  6  2022 out.md5
+[spolisetti@greenhornetinddev2 TEST]$ 
+
+
+// Running few test cases as part of Shell Script
+
+sh test.sh
