@@ -52,6 +52,10 @@ Ex:
 [spolisetti@greenhornetinddev2 TEST]$ 
 
 
-// Running few test cases as part of Shell Script
+// Running few test cases as part of Shell Script for Shell script
 
 sh test.sh
+
+// Running few test cases as part of Shell Script for python script
+
+sh testpython.sh
