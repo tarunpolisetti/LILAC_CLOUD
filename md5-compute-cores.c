@@ -79,6 +79,7 @@ void md5Thread(void* args)
         fprintf(outFile,"\n");
     }
     fclose(outFile);
+    free(args);
     return;
 
 }
