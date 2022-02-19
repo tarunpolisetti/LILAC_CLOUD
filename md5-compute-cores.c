@@ -85,41 +85,31 @@ void md5Thread(void* args)
 }
 int main(int argc, char **argv)
 {
-    char* cpuCores;
     DIR *directory;
     struct dirent *dir;
     int i;
     FILE *outFile,*outfile2;
     char filename[100] = {'\0'};
     unsigned char c[MD5_DIGEST_LENGTH];
-    int coreArray[MAX_CORES] = { -1};
     char* core = NULL;
     int j = 0; 
     int numFiles = 10002;
+    int numcores = 0;
 
 
     struct timeval start, end;
 
     gettimeofday(&start, NULL);
-    if(argc != 3)
+    if(argc != 2)
     {
         printf("illegal parameters expected only 2");
         return 0;
     }
 
     directoryName = argv[1];
-    cpuCores = argv[2];
-    printf("directory Name is %s\n",directoryName);
-    printf("CPU cores is %s\n",cpuCores);
+    printf("directory Name is %s %d \n",directoryName,get_nprocs());
 
-    core = strtok (cpuCores,"-");
-    while (core != NULL)
-    {
-        coreArray[j] = atoi(core);
-        printf ("%d\n",coreArray[j]);
-        j++;
-        core = strtok (NULL, "-");
-    }
+    numcores = get_nprocs();
 
 
     printf("j is %d\n",j);
@@ -127,15 +117,15 @@ int main(int argc, char **argv)
 
     int k;
     int startFiles = 1;
-    int scaleFactor = numFiles/j;
+    int scaleFactor = numFiles/numcores;
     pthread_t thread[j];
-    for (k = 0 ; k < j ; k++)
+    for (k = 0 ; k < numcores ; k++)
     {
         threadargs *args = (threadargs*)malloc(sizeof(threadargs));
-        args->cpuCore = coreArray[k];
+        args->cpuCore = k;
         args->startFileNo = startFiles;
 
-        if(k == (j-1))
+        if(k == (numcores-1))
         {
             args->EndFileNo = numFiles;
         }
@@ -150,7 +140,7 @@ int main(int argc, char **argv)
 
     }
 
-    for (k = 0; k < j; k++) {
+    for (k = 0; k < numcores; k++) {
         pthread_join(thread[k], NULL);
     }
 
@@ -158,13 +148,13 @@ int main(int argc, char **argv)
     strcat(filename,"out.md5");
     outFile = fopen (filename, "w");
 
-    for( k = 0 ; k < j ; k++)
+    for( k = 0 ; k < numcores ; k++)
     {
         char buf[1000] = { '\0'};
         char file[100] = {'\0'};
         char temp2[100] = {'\0'};
         strcat(file,directoryName);
-        sprintf(temp2, "%d", coreArray[k]);
+        sprintf(temp2, "%d", k);
         strcat(file,temp2);
         strcat(file,"_out.md5");
 
